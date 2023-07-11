@@ -1,0 +1,28 @@
+{
+    "header": [
+        {
+            "title": "option1",
+            "path": "/"
+        },
+        {
+            "title": "option2",
+            "path": "/"
+        },
+        {
+            "title": "option3",
+            "path": "/"
+        },
+        {
+            "title": "option4",
+            "path": "/"
+        },
+        {
+            "title": "option5",
+            "path": "/"
+        },
+        {
+            "title": "option6",
+            "path": "/"
+        }
+    ]
+}
