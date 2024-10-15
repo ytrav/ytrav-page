@@ -1,0 +1,10 @@
+@use 'variables.scss' as v;
+
+@media screen and (max-width: 649px) {
+    .landing {
+        .about .block {
+            max-width: 100%;
+            width: 100%;
+        }
+    }
+}

@@ -12,5 +12,5 @@ export default {
 
 <template>
   <AppHeader />
-  <RouterView />
+  <RouterView class="page" />
 </template>
