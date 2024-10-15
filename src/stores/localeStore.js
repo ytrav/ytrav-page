@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-import LocaleEnglish from '../locale/LocaleEnglish.json'
+import LocaleEnglish from '../locale/localeEnglish.json'
 
 export const useLocaleStore = defineStore('locale', {
     state: () => ({
