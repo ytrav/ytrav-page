@@ -2,6 +2,7 @@ import './style/variables.scss';
 import './style/style.scss';
 import './style/fonts.scss';
 import './style/header.scss';
+import './style/navbar.scss';
 import './style/landing.scss';
 import './style/viewports.scss';
 

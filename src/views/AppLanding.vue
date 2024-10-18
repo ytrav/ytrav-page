@@ -4,6 +4,9 @@ import LandingBlock from '../components/landing/LandingBlock.vue';
 
 import about from '../assets/about.json';
 
+import { useVarStore } from '../stores/varStore';
+import { mapStores } from 'pinia';
+
 export default {
     components: {
         LandingCover,
@@ -14,11 +17,28 @@ export default {
             about
         }
     },
+    computed: {
+        ...mapStores(useVarStore)
+    },
+    mounted() {
+        this.$refs.page.addEventListener('scroll', this.handleScroll);
+        this.handleScroll()
+    },
+    methods: {
+        handleScroll() {
+            let st = this.$refs.page.scrollTop;
+            if (st > 100) {
+                this.varStore.setScrolled(true);
+            } else {
+                this.varStore.setScrolled(false);
+            }
+        }
+    }
 }
 </script>
 
 <template>
-    <div class="landing">
+    <div class="landing" ref="page">
         <div class="wrapper">
             <LandingCover />
             <div class="about">
