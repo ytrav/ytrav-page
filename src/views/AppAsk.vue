@@ -31,16 +31,23 @@ export default {
     <div class="ask">
         <div class="wrapper">
             <h1>Send me a message</h1>
+            <p>Here you can send me a completely anonymous message, ask a question, share gossip, anything, free of charge^^</p>
+            <p>I will reply to messages from time to time on my twitter</p>
             <form>
                 <div class="form-group">
                     
                 </div>
                 <div class="form-group
                 ">
-                    <label for="question">Message</label>
-                    <textarea v-model="message" id="question"></textarea>
+                    
+                    <textarea v-model="message" id="question" placeholder="Enter your wonderful message..." autocomplete="off"></textarea>
                 </div>
-                <button @click.prevent="sendMessage">Submit</button>
+                <button v-wave="{
+                    duration: 0.2,
+                    color: 'currentColor',
+                    initialOpacity: 0.2,
+                    easing: 'ease-out'
+                }" @click.prevent="sendMessage">Send!</button>
             </form>
         </div>
     </div>

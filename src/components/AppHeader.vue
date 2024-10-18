@@ -1,5 +1,5 @@
 <script>
-import SvgIcon from '@jamescoyle/vue-icon'
+// import SvgIcon from '@jamescoyle/vue-icon'
 import { mdiMenu } from '@mdi/js'
 import { mapStores } from 'pinia';
 import { useLocaleStore } from '../stores/localeStore';
@@ -9,7 +9,7 @@ import { useLocaleStore } from '../stores/localeStore';
 export default {
     name: 'AppHeader',
     components: {
-        'mdicon': SvgIcon,
+        // 'mdicon': SvgIcon,
     },
     computed: {
         ...mapStores(useLocaleStore)
@@ -25,10 +25,7 @@ export default {
 
 <template>
     <header>
-        <h2>ytrav</h2>
-        <div class="links">
-            <RouterLink to="/" />
-        </div>
-        <mdicon class="mdi" type="mdi" :path="menu" />
+        <h2>ytrav.page</h2>
+        
     </header>
 </template>

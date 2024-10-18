@@ -36,24 +36,24 @@
     flex-wrap: wrap;
     gap: 20px;
     .block {
-        @include v.flex(column, center, flex-start);
-        background-color: #FEDFEB;
-        padding: 15px 25px 25px 25px;
-        max-width: 440px;
-        flex-grow: 1;
-        flex-shrink: 1;
-        flex-basis: 0;
-        min-width: 290px;
-        border-radius: 35px;
-        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-        h3 {
-            color: v.$secondary;
-            font-weight: 600;
-            font-size: 1.6rem;
-        }
-        p:not(:last-child) {
-            margin-bottom: 15px;
-        }
+      @include v.flex(column, center, flex-start);
+      background-color: #fedfeb;
+      padding: 15px 25px 25px 25px;
+      max-width: 440px;
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-basis: 0;
+      min-width: 290px;
+      border-radius: 35px;
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      h3 {
+        color: v.$secondary;
+        font-weight: 600;
+        font-size: 1.6rem;
+      }
+      p:not(:last-child) {
+        margin-bottom: 15px;
+      }
     }
   }
 }

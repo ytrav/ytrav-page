@@ -1,37 +1,38 @@
-import db from '../firebase/firebase.js'
-import { ref, push } from 'firebase/database'
-import dotenv from 'dotenv'
-
+import admin from 'firebase-admin';
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' }); // Explicitly load .env.local
 /* eslint-env node */
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config()
+// Ensure Firebase Admin SDK is initialized only once
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
+    }),
+    databaseURL: process.env.FIREBASE_DATABASE_URL
+  });
 }
+
+const db = admin.database();
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    console.log('Received a POST request') // Debug log
-
-    const { message } = req.body
-    console.log('Message received:', message) // Debug log for message
+    const { message } = req.body;
 
     try {
-      if (!message) {
-        console.log('Message is empty or undefined')
-        return res.status(400).json({ success: false, error: 'Message is required' })
-      }
+      const messagesRef = db.ref('messages');
+      await messagesRef.push({
+        message: message,
+        timestamp: Date.now(),
+      });
 
-      console.log('Attempting to push message to Firebase')
-      const messagesRef = ref(db, 'messages')
-      await push(messagesRef, { message, timestamp: Date.now() })
-
-      console.log('Message stored successfully')
-      res.status(200).json({ success: true, message: 'Message stored successfully' })
+      res.status(200).json({ success: true, message: 'Message stored successfully' });
     } catch (error) {
-      console.error('Error storing message:', error) // Log the error for better debugging
-      res.status(500).json({ success: false, error: 'Failed to store message' })
+      console.error('Error writing message:', error);
+      res.status(500).json({ success: false, error: 'Failed to store message' });
     }
   } else {
-    console.log('Request method not allowed')
-    res.status(405).json({ success: false, error: 'Method not allowed' })
+    res.status(405).json({ success: false, error: 'Method not allowed' });
   }
 }

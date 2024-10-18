@@ -41,6 +41,15 @@ export default {
                 },
             ],
         }
+    },
+    methods: {
+        getIconType(icon, path) {
+            if (this.$route.fullPath !== path) {
+                return icon + '-outline';
+            } else {
+                return icon;
+            }
+        }
     }
 }
 </script>
@@ -49,8 +58,9 @@ export default {
 <template>
     <nav>
         <RouterLink v-for="(link, index) in nav" :key="index" :to="link.path">
-            <ion-icon :name="link.icon"></ion-icon>
+            <ion-icon :name="getIconType(link.icon, link.path)"></ion-icon>
             <span>{{ link.label }}</span>
+
         </RouterLink>
     </nav>
 </template>

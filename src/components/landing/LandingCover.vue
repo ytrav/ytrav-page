@@ -1,7 +1,18 @@
+<script>
+import { useDataStore } from '../../stores/dataStore';
+import { mapStores } from 'pinia';
+
+export default {
+    computed: {
+        ...mapStores(useDataStore)
+    },
+}
+</script>
+
 <template>
     <div class="cover">
         <div class="greeting">
-            <h2>Welcome, stranger!</h2>
+            <h2>Welcome, {{ dataStore.user.name }}!</h2>
             <h1>Glad you stopped by!</h1>
         </div>
         <div class="caption">
