@@ -1,26 +1,47 @@
 <script>
 import axios from 'axios';
+import { useVarStore } from '../stores/varStore';
+import { mapStores } from 'pinia';
 
 export default {
     data() {
         return {
             message: '',
             successMessage: '',
+            textboxDisabled: false,
+            maxLength: 140,
+        }
+    },
+    computed: {
+        ...mapStores(useVarStore),
+        disableSend() {
+            if (this.message === '' || this.message.length > this.maxLength) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        length() {
+            return this.message.length;
         }
     },
     methods: {
         async sendMessage() {
-            try {
-                const response = await axios.post('/api/send-message', {
-                    message: this.message
-                });
-                if (response.data.success) {
-                    this.successMessage = 'Message sent successfully';
-                    this.message = '';
+            if (!this.disableSend) {
+                this.textboxDisabled = true;
+                try {
+                    const response = await axios.post('/api/send-message', {
+                        message: this.message
+                    });
+                    if (response.data.success) {
+                       this.varStore.callToast('Message sent successfully', 'checkmark-done-outline');
+                        this.message = '';
+                    }
+                } catch (error) {
+                    console.error('Failed to send message:', error);
+                    this.varStore.callToast('Failed to send message, please try again later', 'close-circle-outline');
                 }
-            } catch (error) {
-                console.error('Failed to send message:', error);
-                this.successMessage = 'Failed to send message';
+                this.textboxDisabled = false;
             }
         }
     }
@@ -30,19 +51,18 @@ export default {
 <template>
     <div class="ask">
         <div class="wrapper">
-            <h1>Send me a message</h1>
-            <p>Here you can send me a completely anonymous message, ask a question, share gossip, anything, free of charge^^</p>
+            <h2>Send me a message</h2>
+            <p>Here you can send me a completely anonymous message, ask a question, share gossip, anything, free of
+                charge^^</p>
             <p>I will reply to messages from time to time on my twitter</p>
+            <span class="counter" :class="{ warn: length > maxLength - 40, stop: length >= maxLength }">{{ length
+                }}/{{ maxLength }}</span>
             <form>
-                <div class="form-group">
-                    
-                </div>
-                <div class="form-group
-                ">
-                    
-                    <textarea v-model="message" id="question" placeholder="Enter your wonderful message..." autocomplete="off"></textarea>
-                </div>
-                <button v-wave="{
+                <textarea :class="{ disabled: textboxDisabled }" :disabled="textboxDisabled" v-model="message"
+                    spellcheck="false" id="question" placeholder="Enter your wonderful message..."
+                    autocomplete="off"></textarea>
+
+                <button :class="{ disabled: disableSend }" :disabled="disableSend" v-wave="{
                     duration: 0.2,
                     color: 'currentColor',
                     initialOpacity: 0.2,

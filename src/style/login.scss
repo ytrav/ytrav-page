@@ -6,9 +6,9 @@
     @include v.flex(column, flex-start, stretch);
     gap: 10px;
     .form-group {
-        // @include v.flex(column, flex-start, stretch);
-        @include v.flex(column, space-between, stretch);
-        gap: 10px;
+      // @include v.flex(column, flex-start, stretch);
+      @include v.flex(column, space-between, stretch);
+      gap: 10px;
       input {
         width: 100%;
         padding: 10px;
@@ -19,7 +19,6 @@
           outline: none;
         }
       }
-
     }
   }
 }

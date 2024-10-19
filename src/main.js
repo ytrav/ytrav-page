@@ -3,6 +3,7 @@ import './style/style.scss';
 import './style/fonts.scss';
 import './style/header.scss';
 import './style/navbar.scss';
+import './style/toast.scss';
 import './style/landing.scss';
 import './style/ask.scss';
 import './style/login.scss';

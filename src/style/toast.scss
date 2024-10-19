@@ -1,0 +1,53 @@
+@use 'variables.scss' as v;
+
+.toast {
+    position: fixed;
+    bottom: 70px;
+    min-height: 70px;
+    background-color: #fddfea;
+    width: calc(100% - 40px);
+    max-width: 500px;
+    left: 50%;
+    transform: translateX(-50%);
+    // margin: 0 20px;
+    border-radius: 15px;
+    padding: 20px 30px;
+    @include v.flex(row, space-between, center);
+    gap: 20px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    ion-icon {
+        flex-shrink: 0;
+        font-size: 1.5rem;
+        color: v.$secondary;
+    }
+    p {
+        text-align: center;
+        flex-grow: 1;
+    }
+    .close {
+        @include v.flex(row, center, center);
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        flex-shrink: 0;
+        font-size: 1.2rem;
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        padding: 8px;
+        border-radius: 0 15px 0 10px;
+        ion-icon {
+            color: rgba(v.$tertiary, 0.7);
+        }
+    }
+}
+
+
+.toast-enter-active, .toast-leave-active {
+    transition: opacity 0.2s ease-out, transform 0.3s ease-out;
+}
+
+.toast-enter-from, .toast-leave-to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(50px) scale(0.9);
+}
