@@ -1,0 +1,25 @@
+@use 'variables.scss' as v;
+
+.login .wrapper {
+  @include v.flex(column, flex-start, stretch);
+  form {
+    @include v.flex(column, flex-start, stretch);
+    gap: 10px;
+    .form-group {
+        // @include v.flex(column, flex-start, stretch);
+        @include v.flex(column, space-between, stretch);
+        gap: 10px;
+      input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        &:focus {
+          border-color: v.$primary;
+          outline: none;
+        }
+      }
+
+    }
+  }
+}

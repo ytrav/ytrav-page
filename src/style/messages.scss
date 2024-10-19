@@ -1,0 +1,42 @@
+@use 'variables.scss' as v;
+
+.messages .wrapper {
+    @include v.flex(column, flex-start, stretch);
+    gap: 10px;
+    padding: 20px;
+
+    .messages {
+        @include v.flex(column, flex-start, stretch);
+        gap: 10px;
+        // padding: 20px;
+        border-radius: 20px;
+        // background-color: #fddfea33;
+        width: 100%;
+        // max-height: 70vh;
+        padding-bottom: 200px;
+        overflow-y: auto;
+
+        .message {
+            @include v.flex(column, space-between, flex-start);
+            gap: 10px;
+            padding: 10px;
+            border-radius: 20px;
+            background-color: #fddfea;
+            width: 100%;
+            // min-height: 100px;
+            // max-width: 80%;
+            word-wrap: break-word;
+
+            .time {
+                flex-grow: 1;
+                color: v.$tertiary;
+                font-size: 0.9rem;
+            }
+
+            .text {
+                color: v.$secondary;
+                font-size: 1.1rem;
+            }
+        }
+    }
+}

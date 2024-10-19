@@ -5,6 +5,8 @@ import './style/header.scss';
 import './style/navbar.scss';
 import './style/landing.scss';
 import './style/ask.scss';
+import './style/login.scss';
+import './style/messages.scss';
 import './style/viewports.scss';
 
 

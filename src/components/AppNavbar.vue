@@ -35,9 +35,9 @@ export default {
                     icon: 'home'
                 },
                 {
-                    label: 'Temp3',
-                    path: '/temp',
-                    icon: 'home'
+                    label: 'Messages',
+                    path: '/messages',
+                    icon: 'person'
                 },
             ],
         }
