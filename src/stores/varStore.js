@@ -4,7 +4,7 @@ export const useVarStore = defineStore('var', {
   state: () => ({
     scrolled: false,
     toast: {
-      show: true,
+      show: false,
       message: 'This is a toast message',
       type: 'info',
       icon: 'information'

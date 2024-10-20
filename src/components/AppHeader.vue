@@ -25,7 +25,7 @@ export default {
 
 <template>
     <header>
-        <h2>ytrav.page</h2>
+        <h2>ytrav.me</h2>
         
     </header>
 </template>

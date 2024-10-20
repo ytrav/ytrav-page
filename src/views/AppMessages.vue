@@ -15,7 +15,14 @@ export default {
             try {
                 const response = await axios.get('/api/get-messages');
                 if (response.data.success) {
-                    this.messages = response.data.messages || [];
+                    let arr = response.data.messages || [];
+                    this.messages = Object.fromEntries(Object.entries(arr).reverse());;
+                    
+
+                    // console.log('type:', typeof this.messages);
+
+                    // console.log('Messages:', this.messages);
+
                 }
             } catch (error) {
                 console.error('Error fetching messages:', error.response ? error.response.data : error);
@@ -52,7 +59,8 @@ export default {
 
             <div class="messages">
                 <div class="message" v-for="(message, index) in messages" :key="index">
-                    <span class="time">{{ getTimeSince(message.timestamp) }}</span><span class="text">{{ message.message }}</span>
+                    <span class="time">{{ getTimeSince(message.timestamp) }}</span><span class="text">{{ message.message
+                        }}</span>
                 </div>
             </div>
         </div>
