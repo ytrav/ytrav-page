@@ -64,7 +64,7 @@ export default {
 
                 <button :class="{ disabled: disableSend }" :disabled="disableSend" v-wave="{
                     duration: 0.2,
-                    color: 'currentColor',
+                    color: '#FFB4C9',
                     initialOpacity: 0.2,
                     easing: 'ease-out'
                 }" @click.prevent="sendMessage">Send!</button>

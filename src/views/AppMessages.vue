@@ -4,7 +4,7 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            messages: []
+            messages: null
         }
     },
     mounted() {
@@ -17,7 +17,7 @@ export default {
                 if (response.data.success) {
                     let arr = response.data.messages || [];
                     this.messages = Object.fromEntries(Object.entries(arr).reverse());;
-                    
+
 
                     // console.log('type:', typeof this.messages);
 
@@ -47,7 +47,7 @@ export default {
             if (interval >= 1) return interval + " minute" + (interval > 1 ? "s" : "") + " ago";
 
             return Math.floor(seconds) + " second" + (seconds > 1 ? "s" : "") + " ago";
-        }
+        },
     }
 }
 </script>
@@ -57,11 +57,22 @@ export default {
         <div class="wrapper">
             <h1>Messages</h1>
 
-            <div class="messages">
-                <div class="message" v-for="(message, index) in messages" :key="index">
-                    <span class="time">{{ getTimeSince(message.timestamp) }}</span><span class="text">{{ message.message
-                        }}</span>
+            <div v-if="messages !== null" class="messages-list">
+                <TransitionGroup name="load-in" appear>
+                    <div class="message" v-for="(message, index) in Object.values(messages)" :key="index" :style="{
+                        transitionDelay: `${index * 0.1}s`
+                    }">
+                        <span class="time">{{ getTimeSince(message.timestamp) }}</span><span class="text">{{
+                            message.message
+                            }}</span>
+                    </div>
+                </TransitionGroup>
+                <div class="footer">
+                    <span>-- And then the messages ended --</span>
                 </div>
+            </div>
+            <div v-else class="loader-wrapper">
+                <span class="loader"></span>
             </div>
         </div>
     </div>

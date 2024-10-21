@@ -9,6 +9,7 @@ header {
     color: v.$secondary;
     font-weight: 700;
     // margin-left: 40px;
+    @include v.no-select();
   }
 
   border-bottom: 1px solid rgba(174, 106, 125, 0.5);

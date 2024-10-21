@@ -1,0 +1,162 @@
+@use 'variables' as v;
+.posts .wrapper {
+  width: 100%;
+  h1 {
+    color: v.$secondary;
+    margin: 10px 0 0 20px;
+  }
+  .posts-list {
+    @include v.flex(column, flex-start, stretch);
+    gap: 10px;
+    padding: 20px;
+    .post {
+      gap: 10px;
+      padding: 10px 15px;
+      border-radius: 20px;
+      background-color: #fddfea;
+      width: 100%;
+      @include v.flex(column, space-between, stretch);
+      .post-wrapper {
+        @include v.flex(row, space-between, flex-start);
+        gap: 10px;
+        .avatar {
+          margin-left: -5px;
+          flex-grow: 0;
+          height: 50px;
+          width: 50px;
+          border-radius: 15px;
+          img {
+            @include v.no-select();
+            @include v.no-drag();
+            // width: 100%;
+            border-radius: 15px;
+            height: 50px;
+            object-fit: cover;
+          }
+        }
+        .post-body {
+          flex-grow: 1;
+          .post-header {
+            @include v.flex(row, flex-start, center);
+            gap: 10px;
+            .name {
+              color: v.$secondary;
+              font-size: 1.2rem;
+              font-weight: 500;
+              text-decoration: none;
+              @include v.truncate(170px);
+              flex-shrink: 3;
+            }
+            .handle {
+              color: v.$tertiary;
+              text-decoration: none;
+            }
+            .time {
+              color: v.$tertiary;
+              opacity: 0.7;
+              font-size: 0.9rem;
+              @include v.no-select();
+            }
+          }
+          .embed {
+            max-width: 100%;
+            @include v.flex(column, flex-start, flex-start);
+            .image-layout {
+              margin-top: 10px;
+              @include v.flex(row, center, center);
+              gap: 10px;
+              a {
+                width: 100%;
+                border-radius: 15px;
+                overflow: hidden;
+                max-height: 250px;
+                @include v.flex(row, center, center);
+                img {
+                  @include v.no-select();
+                  @include v.no-drag();
+                  width: 100%;
+                }
+              }
+              .embedded {
+                width: 100%;
+                max-width: 100%;
+                border-radius: 10px;
+                overflow: hidden;
+                object-fit: cover;
+                object-position: center;
+                max-height: 250px;
+              }
+            }
+            .quote {
+              margin-top: 10px;
+              width: 100%;
+              max-width: 100%;
+              flex-shrink: 3;
+              // min-width: 100px;
+              @include v.flex(column, space-between, flex-start);
+              text-decoration: none;
+              border: 2px solid rgba(v.$secondary, 0.5);
+              border-radius: 15px;
+              padding: 10px;
+              .post-header {
+                .head-wrap {
+                  @include v.flex(row, flex-start, center);
+                  gap: 5px;
+                  img {
+                    width: 25px;
+                    border-radius: 7.5px;
+                  }
+                  .name {
+                    font-size: 1.1rem;
+                    color: v.$secondary;
+                    @include v.truncate(200px);
+                  }
+                }
+                .head-second {
+                  @include v.flex(row, flex-start, center);
+                  gap: 5px;
+                }
+              }
+            }
+          }
+        }
+      }
+      .interactions {
+        @include v.flex(row, space-between, center);
+        width: 100%;
+        gap: 10px;
+        // max-width: 350px;
+        @include v.no-select();
+        div {
+          @include v.flex(row, flex-start, center);
+          gap: 10px;
+          //   border: 1px solid red;
+          width: 60px;
+        }
+        button,
+        a {
+          border: none;
+          background-color: transparent;
+          @include v.flex(row, center, center);
+          font-size: 1em;
+          cursor: pointer;
+          padding: 7px;
+          margin: -7px;
+          border-radius: 50%;
+        }
+        button {
+          margin: -7px -20px -7px 83px;
+        }
+      }
+    }
+  }
+}
+
+.footer {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 100px;
+  @include v.no-select();
+  opacity: 0.7;
+}

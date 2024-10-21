@@ -3,11 +3,12 @@ import { defineStore } from 'pinia'
 export const useVarStore = defineStore('var', {
   state: () => ({
     scrolled: false,
+    loggedIn: false,
     toast: {
       show: false,
       message: 'This is a toast message',
       type: 'info',
-      icon: 'information'
+      icon: 'information',
     }
   }),
   actions: {
@@ -27,6 +28,10 @@ export const useVarStore = defineStore('var', {
       this.toastTimeout = setTimeout(() => {
         this.toast.show = false
       }, 5000)
+    },
+    setLoggedIn(value) {
+      this.loggedIn = value
+      
     }
   }
 })

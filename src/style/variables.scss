@@ -26,3 +26,18 @@ $bezier: cubic-bezier(0.57, 0.21, 0.69, 1.25);
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+@mixin no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+@mixin no-drag {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}

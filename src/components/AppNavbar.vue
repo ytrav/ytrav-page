@@ -25,14 +25,14 @@ export default {
                     icon: 'chatbox-ellipses'
                 },
                 {
-                    label: 'Temp1',
-                    path: '/temp',
-                    icon: 'home'
+                    label: 'Posts',
+                    path: '/posts',
+                    icon: 'at'
                 },
                 {
-                    label: 'Temp2',
-                    path: '/temp',
-                    icon: 'home'
+                    label: 'Socials',
+                    path: '/socials',
+                    icon: 'share-social'
                 },
                 {
                     label: 'Messages',

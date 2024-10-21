@@ -56,3 +56,60 @@ body {
 .wrapper {
   max-width: 900px;
 }
+
+.load-in-enter-active,
+.load-in-leave-active {
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.load-in-enter-from,
+.load-in-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.fade-leave-active {
+  transition: opacity 0.3s ease-out;
+}
+
+.fade-leave-to {
+  opacity: 0;
+}
+
+.loader-wrapper {
+  opacity: 0.5;
+  width: 100%;
+  margin-top: 50px;
+  @include v.flex(row, center, center);
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  background: linear-gradient(0deg, v.$additional 33%, v.$tertiary 100%);
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+.loader::after {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: v.$primary;
+}
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

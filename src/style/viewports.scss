@@ -1,10 +1,87 @@
 @use 'variables.scss' as v;
 
-@media screen and (max-width: 649px) {
-    .landing {
-        .about .block {
-            max-width: 100%;
-            width: 100%;
+// @media screen and (max-width: 649px) {
+//     .landing {
+//         .about .block {
+//             max-width: 100%;
+//             width: 100%;
+//         }
+//     }
+// }
+@media screen and (max-width: 558px) {
+  .posts .wrapper .posts-list .post .post-wrapper .post-body .embed .quote {
+    .post-header {
+      .head-wrap {
+        .name {
+          @include v.truncate(120px);
         }
+      }
     }
+  }
+}
+@media screen and (max-width: 470px) {
+  .posts .wrapper .posts-list .post {
+    .interactions a {
+      margin-left: 10px;
+    }
+    .post-wrapper .post-body .embed .quote {
+      .post-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0px;
+        width: 100%;
+        .head-wrap {
+          .name {
+            @include v.truncate(200px);
+          }
+        }
+        .head-second {
+          margin-bottom: 10px;
+          justify-content: space-between;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+// @media screen and (max-width: 440px) {
+//   .posts .wrapper .posts-list .post .post-wrapper .post-body .embed .quote {
+//     .post-header {
+//       .handle {
+//         @include v.truncate(100px);
+//       }
+//     }
+//   }
+// }
+// @media screen and (max-width: 400px) {
+//   .posts .wrapper .posts-list .post .post-wrapper .post-body .embed .quote {
+//     .post-header {
+//       .name {
+//         @include v.truncate(60px);
+//       }
+//       .handle {
+//         @include v.truncate(100px);
+//       }
+//     }
+//   }
+// }
+
+@media screen and (max-width: 370px) {
+  .posts .wrapper .posts-list .post .post-wrapper .post-body {
+    width: 100%;
+    .embed {
+      width: 100%;
+      .quote {
+        width: 100%;
+        // max-width: calc(100% - 10px);
+        .text {
+          // @include v.truncate(200px);
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          max-height: 80px;
+          overflow: hidden;
+        }
+      }
+    }
+  }
 }

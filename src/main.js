@@ -8,6 +8,8 @@ import './style/landing.scss';
 import './style/ask.scss';
 import './style/login.scss';
 import './style/messages.scss';
+import './style/posts.scss';
+import './style/socials.scss';
 import './style/viewports.scss';
 
 
