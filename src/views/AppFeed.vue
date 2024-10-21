@@ -101,6 +101,14 @@ export default {
         getFormattedText(text) {
             return text.replace(/(?:\r\n|\r|\n)/g, '<br>');
         },
+        getFormattedLink(link, author) {
+            console.log('link:', link, ' author:', author);
+
+            if (author !== undefined && link !== undefined) {
+                return `https://bsky.app/profile/${author.handle}/post/${link.split('/')[4]}`;
+            }
+            return `https://bsky.app/`
+        },
         copyLink(link) {
             navigator.clipboard.writeText(link);
             this.varStore.callToast('Post link copied to clipboard', 'copy-outline');
@@ -153,13 +161,27 @@ export default {
                                             <img :src="image.thumb" :alt="image.alt">
                                         </a>
                                     </div>
-                                    <a target="_blank" v-wave="{
+                                    <div v-else-if="(post?.post?.embed?.media?.images) !== undefined" class="embed">
+                                        <div v-if="post?.post?.embed?.media?.images" class="image-layout">
+                                            <a v-wave="{
+                                                duration: 0.3,
+                                                color: '#AE6A7D',
+                                                initialOpacity: 0.2,
+                                                easing: 'ease-out'
+                                            }" target="_blank" v-for="(image, idx) in post.post.embed.media.images"
+                                                :key="idx" :href="image.fullsize">
+                                                <img :src="image.thumb" :alt="image.alt">
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <a v-if="post?.post?.embed?.record?.author" target="_blank" v-wave="{
                                         duration: 0.3,
                                         color: '#AE6A7D',
                                         initialOpacity: 0.2,
                                         easing: 'ease-out'
-                                    }" :href="`https://bsky.app/profile/${post.post.embed.record.author.handle}/post/${(post.post.embed.record.uri).split('/')[4]}`"
-                                        v-if="post.post.embed.record" class="quote">
+                                    }" :href="getFormattedLink(post.post.embed.record.uri, post.post.embed.record.author)"
+                                        class="quote">
                                         <div class="post-header">
                                             <div class="head-wrap">
                                                 <img :src="post.post.embed.record.author.avatar" alt="avatar">
@@ -169,14 +191,15 @@ export default {
                                             <div class="head-second">
                                                 <span class="handle">@{{ post.post.embed.record.author.handle }}</span>
                                                 <span class="time">{{
-                                                    timeSinceShort(post.post.embed.record.author.createdAt)
+                                                    timeSinceShort(post.post.embed.record.value.createdAt)
                                                 }}</span>
                                             </div>
                                         </div>
                                         <p class="text">
                                             {{ post.post.embed.record.value.text }}
                                         </p>
-                                        <div v-if="(post.post.embed.record.embeds).length > 0" class="embed">
+                                        <div v-if="post?.post?.embed?.record?.embeds && (post?.post?.embed?.record?.embeds).length > 0"
+                                            class="embed">
                                             <div v-if="post.post.embed.record.embeds[0].media.images"
                                                 class="image-layout">
                                                 <img class="embedded"
@@ -184,8 +207,39 @@ export default {
                                                     :key="index" :src="image.thumb" :alt="image.alt">
                                             </div>
                                         </div>
+                                    </a>
+                                    <a v-else-if="post?.post?.embed?.record?.record" target="_blank" v-wave="{
+                                        duration: 0.3,
+                                        color: '#AE6A7D',
+                                        initialOpacity: 0.2,
+                                        easing: 'ease-out'
+                                    }" :href="getFormattedLink(post.post.embed.record.uri, post.post.embed.record.record.author.handle)"
+                                        class="quote">
+                                        <div class="post-header">
+                                            <div class="head-wrap">
+                                                <img :src="post.post.embed.record.record.author.avatar" alt="avatar">
+                                                <span class="name">{{ post.post.embed.record.record.author.displayName
+                                                    }}</span>
+                                            </div>
+                                            <div class="head-second">
+                                                <span class="handle">@{{ post.post.embed.record.record.author.handle
+                                                    }}</span>
+                                                <span class="time">
+                                                    {{ timeSinceShort(post.post.embed.record.record.value.createdAt) }}
+                                                </span>
+                                            </div>
+                                        </div>
 
-
+                                        <p class="text">
+                                            {{ post.post.embed.record.record.value.text }}
+                                        </p>
+                                        <div v-if="(post?.post?.embed?.record?.record?.embeds[0]?.images).length > 0" class="embed">
+                                            <div class="image-layout">
+                                                <img class="embedded"
+                                                    v-for="(image, index) in post?.post?.embed?.record?.record?.embeds[0]?.images" :key="index"
+                                                    :src="image.thumb" :alt="image.alt">
+                                            </div>
+                                        </div>
                                     </a>
                                 </div>
                             </div>
