@@ -1,11 +1,12 @@
-$primary: #FCD5E0;
-$secondary: #AE6A7D;
+$primary: #fcd5e0;
+$secondary: #ae6a7d;
 $tertiary: #362227;
-$additional: #E088A1;
-$highlight: #FFB4C9;
-$container: #FFEBF6;
+$additional: #e088a1;
+$highlight: #ffb4c9;
+$container: #ffebf6;
 
 $bezier: cubic-bezier(0.57, 0.21, 0.69, 1.25);
+$bezier-alt: cubic-bezier(0.22, 0.68, 0, 1.71);
 
 @mixin flex($direction, $justify, $align) {
   display: flex;

@@ -98,17 +98,61 @@ export default {
             }
             return this.posts[index].post[type];
         },
-        getFormattedText(text) {
-            return text.replace(/(?:\r\n|\r|\n)/g, '<br>');
-        },
+        // getFormattedText(text) {
+        //     return text.replace(/(?:\r\n|\r|\n)/g, '<br>');
+        // },
         getFormattedLink(link, author) {
-            console.log('link:', link, ' author:', author);
+            // console.log('link:', link, ' author:', author);
 
             if (author !== undefined && link !== undefined) {
                 return `https://bsky.app/profile/${author.handle}/post/${link.split('/')[4]}`;
             }
             return `https://bsky.app/`
         },
+        getFormattedText(text) {
+            const urlRegex = /https?:\/\/[^\s]+/g;
+            const simpleUrlRegex = /\b[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}(\/[^\s]*)?/g;
+            const handleRegex = /@([a-zA-Z0-9._]+)/g;
+
+            // Replace line breaks with <br>
+            let processedText = text.replace(/(?:\r\n|\r|\n)/g, '<br>');
+
+            // Replace handles first
+            processedText = processedText.replace(handleRegex, (handle) => {
+                return `<a href="https://bsky.app/profile/${handle.slice(1)}" target="_blank">${handle}</a>`;
+            });
+
+            // Temporarily replace existing <a> tags with placeholders to avoid double wrapping
+            let linkPlaceholderIndex = 0;
+            const linkPlaceholders = {};
+
+            // Store all existing <a> tags in placeholders
+            processedText = processedText.replace(/<a[^>]*>(.*?)<\/a>/g, (match) => {
+                const placeholder = `[[LINK_PLACEHOLDER_${linkPlaceholderIndex}]]`;
+                linkPlaceholders[placeholder] = match;
+                linkPlaceholderIndex++;
+                return placeholder;
+            });
+
+            // Now replace URLs with http/https
+            processedText = processedText.replace(urlRegex, (url) => {
+                return `<a href="${url}" target="_blank">${url}</a>`;
+            });
+
+            // Replace domain-like URLs without http/https
+            processedText = processedText.replace(simpleUrlRegex, (url) => {
+                return `<a href="https://${url}" target="_blank">${url}</a>`;
+            });
+
+            // Restore the placeholders back to the original <a> tags
+            Object.keys(linkPlaceholders).forEach((placeholder) => {
+                processedText = processedText.replace(placeholder, linkPlaceholders[placeholder]);
+            });
+
+            return processedText;
+        },
+
+
         copyLink(link) {
             navigator.clipboard.writeText(link);
             this.varStore.callToast('Post link copied to clipboard', 'copy-outline');
@@ -192,7 +236,7 @@ export default {
                                                 <span class="handle">@{{ post.post.embed.record.author.handle }}</span>
                                                 <span class="time">{{
                                                     timeSinceShort(post.post.embed.record.value.createdAt)
-                                                }}</span>
+                                                    }}</span>
                                             </div>
                                         </div>
                                         <p class="text">
@@ -233,11 +277,12 @@ export default {
                                         <p class="text">
                                             {{ post.post.embed.record.record.value.text }}
                                         </p>
-                                        <div v-if="(post?.post?.embed?.record?.record?.embeds[0]?.images).length > 0" class="embed">
+                                        <div v-if="(post?.post?.embed?.record?.record?.embeds[0]?.images).length > 0"
+                                            class="embed">
                                             <div class="image-layout">
                                                 <img class="embedded"
-                                                    v-for="(image, index) in post?.post?.embed?.record?.record?.embeds[0]?.images" :key="index"
-                                                    :src="image.thumb" :alt="image.alt">
+                                                    v-for="(image, index) in post?.post?.embed?.record?.record?.embeds[0]?.images"
+                                                    :key="index" :src="image.thumb" :alt="image.alt">
                                             </div>
                                         </div>
                                     </a>

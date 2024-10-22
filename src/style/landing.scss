@@ -1,7 +1,7 @@
 @use 'variables.scss' as v;
 
 .landing {
-  padding: 25px;
+  padding: 25px 25px 120px 25px;
   .cover {
     @include v.flex(column, center, flex-start);
     gap: 10px;

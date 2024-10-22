@@ -21,25 +21,28 @@
 }
 @media screen and (max-width: 470px) {
   .posts .wrapper .posts-list .post {
-    .interactions a {
-      margin-left: 10px;
+    .interactions {
+      a,
+      button {
+        margin-left: 0px;
+      }
     }
     .post-wrapper .post-body .embed .quote {
       .post-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0px;
-        width: 100%;
+        // flex-direction: column;
+        // align-items: flex-start;
+        // gap: 0px;
+        // width: 100%;
         .head-wrap {
           .name {
-            @include v.truncate(200px);
+            @include v.truncate(100px);
           }
         }
-        .head-second {
-          margin-bottom: 10px;
-          justify-content: space-between;
-          width: 100%;
-        }
+        // .head-second {
+        //   margin-bottom: 10px;
+        //   justify-content: space-between;
+        //   width: 100%;
+        // }
       }
     }
   }
@@ -65,6 +68,56 @@
 //     }
 //   }
 // }
+@media screen and (max-width: 445px) {
+  .posts .wrapper .posts-list .post {
+    .post-wrapper .post-body .embed .quote {
+      .post-header {
+        // flex-direction: column;
+        // align-items: flex-start;
+        // gap: 0px;
+        // width: 100%;
+        .head-wrap {
+          .name {
+            @include v.truncate(100px);
+          }
+        }
+        .head-second .handle {
+          @include v.truncate(100px);
+        }
+        // .head-second {
+        //   margin-bottom: 10px;
+        //   justify-content: space-between;
+        //   width: 100%;
+        // }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .posts .wrapper .posts-list .post-wrapper .post-body .embed .quote {
+    .post-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0px;
+      width: 100%;
+      .head-wrap {
+        .name {
+          @include v.truncate(200px);
+        }
+      }
+      .head-second {
+
+        .handle {
+          @include v.truncate(200px);
+        }
+        margin-bottom: 10px;
+        justify-content: space-between;
+        width: 100%;
+      }
+    }
+  }
+}
 
 @media screen and (max-width: 370px) {
   .posts .wrapper .posts-list .post .post-wrapper .post-body {
@@ -76,6 +129,7 @@
         // max-width: calc(100% - 10px);
         .text {
           // @include v.truncate(200px);
+          line-clamp: 2;
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           max-height: 80px;

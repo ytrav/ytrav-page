@@ -26,7 +26,7 @@ export default {
   <Transition name="navbar">
     <AppNavbar />
   </Transition>
-  <Transition name="toast">
+  <Transition name="toast" appear>
     <AppToast v-if="varStore.toast.show" />
   </Transition>
 </template>

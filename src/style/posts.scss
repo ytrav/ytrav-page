@@ -35,6 +35,7 @@
           }
         }
         .post-body {
+          overflow: hidden;
           flex-grow: 1;
           .post-header {
             @include v.flex(row, flex-start, center);
@@ -58,7 +59,18 @@
               @include v.no-select();
             }
           }
+          .text {
+            a {
+              color: v.$secondary;
+              text-decoration: none;
+              font-weight: 500;
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          }
           .embed {
+            overflow: hidden;
             max-width: 100%;
             @include v.flex(column, flex-start, flex-start);
             .image-layout {
@@ -124,6 +136,9 @@
         }
       }
       .interactions {
+        ion-icon {
+          font-size: 1.1rem;
+        }
         @include v.flex(row, space-between, center);
         width: 100%;
         gap: 10px;
@@ -142,7 +157,7 @@
           @include v.flex(row, center, center);
           font-size: 1em;
           cursor: pointer;
-          padding: 7px;
+          padding: 10px;
           margin: -7px;
           border-radius: 50%;
         }
