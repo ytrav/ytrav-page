@@ -173,6 +173,7 @@ export default {
                         const response = await axios.post('/api/translate', {
                             text: text
                         });
+                        
                         if (isReply) {
                             this.posts[index].reply.parent.record.translatedText = response.data.translations[0];
                             this.posts[index].reply.parent.record.translated = true;
@@ -244,19 +245,20 @@ export default {
                                     color: '#AE6A7D',
                                     initialOpacity: 0.2,
                                     easing: 'ease-out'
-                                }" @click="translate(post.reply?.parent?.record?.text, index, true)"
-                                    class="translate"
-                                    v-if="(post.reply?.parent?.record?.langs).some(item => item !== 'en') && !post.reply?.parent?.record?.translated">Translate</button>
+                                }" @click="translate(post.reply?.parent?.record?.text, index, true)" class="translate"
+                                    v-if="(post.reply?.parent?.record?.langs).some(item => item !== 'en') && !post.reply?.parent?.record?.translated">Translate post</button>
                                 <button v-wave="{
                                     duration: 0.3,
                                     color: '#AE6A7D',
                                     initialOpacity: 0.2,
                                     easing: 'ease-out'
                                 }" @click="translate(post.reply?.parent?.record?.text, index, true, true)"
-                                    class="translate" v-else-if="post.reply?.parent?.record?.translated">Hide translation</button>
+                                    class="translate" v-else-if="post.reply?.parent?.record?.translated">Hide
+                                    translation</button>
                                 <p v-if="post.reply?.parent?.record?.translatedText && post.reply?.parent?.record?.translated"
                                     class="text translation">{{
-                                        post.reply?.parent?.record?.translatedText }}</p>
+                                        post.reply?.parent?.record?.translatedText }}
+                                </p>
                                 <div class="embed" v-if="post.reply?.parent?.embed">
                                     <div v-if="post.reply?.parent?.embed.images" class="image-layout">
                                         <a v-wave="{
@@ -300,7 +302,7 @@ export default {
                                                 <span class="handle">@{{ post.post.embed.record.author.handle }}</span>
                                                 <span class="time">{{
                                                     timeSinceShort(post.post.embed.record.value.createdAt)
-                                                }}</span>
+                                                    }}</span>
                                             </div>
                                         </div>
                                         <p class="text">
@@ -399,6 +401,24 @@ export default {
                                     <span class="time">{{ timeSinceShort(post.post.record.createdAt) }}</span>
                                 </div>
                                 <p v-html="getFormattedText(post.post.record.text)" class="text"></p>
+                                <button v-wave="{
+                                    duration: 0.3,
+                                    color: '#AE6A7D',
+                                    initialOpacity: 0.2,
+                                    easing: 'ease-out'
+                                }" @click="translate(post.post?.record?.text, index, false)"
+                                    class="translate"
+                                    v-if="(post.post?.record?.langs).some(item => item !== 'en') && !post.post?.record?.translated">Translate post</button>
+                                <button v-wave="{
+                                    duration: 0.3,
+                                    color: '#AE6A7D',
+                                    initialOpacity: 0.2,
+                                    easing: 'ease-out'
+                                }" @click="translate(post.post?.record?.text, index, false, true)"
+                                    class="translate" v-else-if="post.post?.record?.translated">Hide translation</button>
+                                <p v-if="post.post?.record?.translatedText && post.post?.record?.translated"
+                                    class="text translation">{{
+                                        post.post?.record?.translatedText }}</p>
                                 <div class="embed" v-if="post.post.embed">
                                     <div v-if="post.post.embed.images" class="image-layout">
                                         <a v-wave="{
@@ -442,7 +462,7 @@ export default {
                                                 <span class="handle">@{{ post.post.embed.record.author.handle }}</span>
                                                 <span class="time">{{
                                                     timeSinceShort(post.post.embed.record.value.createdAt)
-                                                    }}</span>
+                                                }}</span>
                                             </div>
                                         </div>
                                         <p class="text">
