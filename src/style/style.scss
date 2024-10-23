@@ -10,7 +10,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Kanit', sans-serif;
+  font-family: 'Kanit', 'Fira', sans-serif;
   color: v.$tertiary;
   font-smooth: always;
   -webkit-font-smoothing: auto;
@@ -112,4 +112,19 @@ body {
   100% {
     transform: rotate(360deg);
   }
+}
+
+
+.page-enter-active,
+.page-leave-active {
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.page-enter-from {
+  transform: translateY(-20px);
+  opacity: 0;
+}
+.page-leave-to {
+  transform: translateY(20px);
+  opacity: 0;
 }

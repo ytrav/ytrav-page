@@ -44,10 +44,19 @@ export default {
     },
     methods: {
         getIconType(icon, path) {
-            if (this.$route.fullPath !== path) {
-                return icon + '-outline';
-            } else {
-                return icon;
+            if (path === '/') {
+                return this.$route.path === '/' ? icon : icon + '-outline';
+            }
+            return this.$route.path.startsWith(path) ? icon : icon + '-outline';
+        }
+    },
+    computed: {
+        isActive() {
+            return (path) => {
+                if (path === '/') {
+                    return this.$route.path === '/';
+                }
+                return this.$route.path.startsWith(path);
             }
         }
     }
@@ -57,7 +66,7 @@ export default {
 
 <template>
     <nav>
-        <RouterLink v-for="(link, index) in nav" :key="index" :to="link.path">
+        <RouterLink v-for="(link, index) in nav" :key="index" :to="link.path" :class="{ active: isActive(link.path) }">
             <ion-icon :name="getIconType(link.icon, link.path)"></ion-icon>
             <span>{{ link.label }}</span>
 

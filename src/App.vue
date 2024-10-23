@@ -22,7 +22,11 @@ export default {
 
 <template>
   <AppHeader />
-  <RouterView class="page" />
+  <RouterView v-slot="{ Component }" class="page">
+    <Transition name="page">
+      <Component :is="Component" />
+    </Transition>
+  </RouterView>
   <Transition name="navbar">
     <AppNavbar />
   </Transition>

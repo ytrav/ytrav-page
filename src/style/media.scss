@@ -1,0 +1,11 @@
+@use 'variables' as v;
+
+.media {
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+//   border: 1px solid red;
+  @include v.flex(row, center, center);
+  background-color: rgba(v.$tertiary, 0.4);
+}

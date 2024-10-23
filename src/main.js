@@ -9,6 +9,7 @@ import './style/ask.scss';
 import './style/login.scss';
 import './style/messages.scss';
 import './style/posts.scss';
+import './style/media.scss';
 import './style/socials.scss';
 import './style/viewports.scss';
 
