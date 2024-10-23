@@ -16,10 +16,31 @@
       background-color: #fddfea;
       width: 100%;
       @include v.flex(column, space-between, stretch);
-      .post-wrapper {
+      .post-wrapper,
+      .reply-wrapper {
+        @include v.flex(row, flex-start, stretch);
+        .pfp-divider-container {
+          align-self: stretch;
+          // flex-grow: 1;
+          @include v.flex(column, space-between, center);
+          min-height: calc(100% - 0px);
+          // min-width: 50px;
+          gap: 9px;
+          .divider {
+            width: 2px;
+            height: 100%;
+            // min-height: 15px;
+            background-color: rgba(v.$secondary, 0.3);
+            flex-grow: 2;
+            transform: translateX(-3px);
+            // border: 2px solid red;
+          }
+        }
         @include v.flex(row, space-between, flex-start);
         gap: 10px;
         .avatar {
+          flex-shrink: 0;
+          flex-grow: 0;
           margin-left: -5px;
           flex-grow: 0;
           height: 50px;
@@ -34,10 +55,29 @@
             object-fit: cover;
           }
         }
-        .post-body {
+        .post-body,
+        .reply-body {
           overflow: hidden;
           flex-grow: 1;
-          .post-header {
+          .translate {
+            cursor: pointer;
+            color: v.$secondary;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 15px;
+            padding: 5px 5px;
+            border: none;
+            background-color: transparent;
+            // margin-left: -5px;
+          }
+          .translation {
+            margin-left: 5px;
+            font-style: italic;
+            opacity: 0.8;
+          }
+          .post-header,
+          .reply-header {
             @include v.flex(row, flex-start, center);
             gap: 10px;
             .name {
@@ -99,6 +139,8 @@
                 object-fit: cover;
                 object-position: center;
                 max-height: 250px;
+                @include v.no-select();
+                @include v.no-drag();
               }
             }
             .quote {
@@ -109,7 +151,7 @@
               // min-width: 100px;
               @include v.flex(column, space-between, flex-start);
               text-decoration: none;
-              border: 2px solid rgba(v.$secondary, 0.5);
+              border: 2px solid rgba(v.$secondary, 0.3);
               border-radius: 15px;
               padding: 10px;
               .post-header {
@@ -136,6 +178,10 @@
         }
       }
       .interactions {
+        &.reply-interactions {
+          margin-bottom: 10px;
+        }
+        margin: 10px 10px 0px 0;
         ion-icon {
           font-size: 1.1rem;
         }
@@ -158,11 +204,11 @@
           font-size: 1em;
           cursor: pointer;
           padding: 10px;
-          margin: -7px;
+          // margin: -7px;
           border-radius: 50%;
         }
         button {
-          margin: -7px -20px -7px 83px;
+          margin: -7px -20px -7px 20px;
         }
       }
     }

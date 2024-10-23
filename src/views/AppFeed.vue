@@ -92,11 +92,18 @@ export default {
 
             return 'now';
         },
-        getInteractionCount(type, index) {
-            if (type === 'repostCount') {
-                return this.posts[index].post.repostCount + this.posts[index].post.quoteCount;
+        getInteractionCount(type, index, isReply) {
+            if (isReply) {
+                if (type === 'repostCount') {
+                    return this.posts[index].reply.parent.repostCount + this.posts[index].post.quoteCount;
+                }
+                return this.posts[index].reply.parent[type];
+            } else {
+                if (type === 'repostCount') {
+                    return this.posts[index].post.repostCount + this.posts[index].post.quoteCount;
+                }
+                return this.posts[index].post[type];
             }
-            return this.posts[index].post[type];
         },
         // getFormattedText(text) {
         //     return text.replace(/(?:\r\n|\r|\n)/g, '<br>');
@@ -151,11 +158,45 @@ export default {
 
             return processedText;
         },
-
-
         copyLink(link) {
             navigator.clipboard.writeText(link);
             this.varStore.callToast('Post link copied to clipboard', 'copy-outline');
+        },
+        async translate(text, index, isReply, showOriginal) {
+            if (!showOriginal) {
+                if (this.posts[index].reply?.parent?.record?.translatedText) {
+                    this.posts[index].reply.parent.record.translated = true;
+                } else if (this.posts[index].post?.record?.translatedText) {
+                    this.posts[index].post.record.translated = true;
+                } else {
+                    if (text !== undefined || text !== '') {
+                        const response = await axios.post('/api/translate', {
+                            text: text
+                        });
+                        if (isReply) {
+                            this.posts[index].reply.parent.record.translatedText = response.data.translations[0];
+                            this.posts[index].reply.parent.record.translated = true;
+                            // console.log('Translated:', response.data.translations[0]);
+                            // console.log('saved:', this.posts[index].reply.parent.record.translatedText);
+                        } else {
+                            this.posts[index].post.record.translatedText = response.data.translations[0];
+                            this.posts[index].post.record.translated = true;
+                        }
+                    } else {
+                        this.varStore.callToast('No text to translate', 'close-circle-outline');
+                    }
+                }
+            } else {
+                if (isReply) {
+                    this.posts[index].reply.parent.record.translated = false;
+                } else {
+                    this.posts.post[index].post.record.translated = false;
+                }
+            }
+            //     q: text,
+            //     target: 'en',
+            //     source: ''
+            // });
         }
     }
 }
@@ -172,6 +213,171 @@ export default {
                     <div v-for="(post, index) in posts" :key="index" class="post" :style="{
                         transitionDelay: `${index * 0.1}s`
                     }">
+                        <div v-if="post.reply" class="reply-wrapper">
+                            <div class="pfp-divider-container">
+                                <a v-if="post.reply?.parent?.author" v-wave="{
+                                    duration: 0.3,
+                                    color: '#AE6A7D',
+                                    initialOpacity: 0.2,
+                                    easing: 'ease-out'
+                                }" target="_blank" class="avatar"
+                                    :href="'https://bsky.app/profile/' + post.reply?.parent?.author.handle">
+                                    <img :src="post.reply?.parent?.author.avatar" alt="pfp">
+                                </a>
+                                <div class="divider"></div>
+                            </div>
+                            <div v-if="post.reply?.parent?.author" class="reply-body">
+                                <div class="reply-header">
+                                    <a target="_blank"
+                                        :href="'https://bsky.app/profile/' + post.reply.parent.author.handle"
+                                        class="name">{{
+                                            post.reply.parent.author.displayName }}</a>
+                                    <a target="_blank"
+                                        :href="'https://bsky.app/profile/' + post.reply.parent.author.handle"
+                                        class="handle">@{{
+                                            post.reply.parent.author.handle }}</a>
+                                    <span class="time">{{ timeSinceShort(post.reply.parent.record.createdAt) }}</span>
+                                </div>
+                                <p v-html="getFormattedText(post.reply?.parent?.record?.text)" class="text"></p>
+                                <button v-wave="{
+                                    duration: 0.3,
+                                    color: '#AE6A7D',
+                                    initialOpacity: 0.2,
+                                    easing: 'ease-out'
+                                }" @click="translate(post.reply?.parent?.record?.text, index, true)"
+                                    class="translate"
+                                    v-if="(post.reply?.parent?.record?.langs).some(item => item !== 'en') && !post.reply?.parent?.record?.translated">Translate</button>
+                                <button v-wave="{
+                                    duration: 0.3,
+                                    color: '#AE6A7D',
+                                    initialOpacity: 0.2,
+                                    easing: 'ease-out'
+                                }" @click="translate(post.reply?.parent?.record?.text, index, true, true)"
+                                    class="translate" v-else-if="post.reply?.parent?.record?.translated">Hide translation</button>
+                                <p v-if="post.reply?.parent?.record?.translatedText && post.reply?.parent?.record?.translated"
+                                    class="text translation">{{
+                                        post.reply?.parent?.record?.translatedText }}</p>
+                                <div class="embed" v-if="post.reply?.parent?.embed">
+                                    <div v-if="post.reply?.parent?.embed.images" class="image-layout">
+                                        <a v-wave="{
+                                            duration: 0.3,
+                                            color: '#AE6A7D',
+                                            initialOpacity: 0.2,
+                                            easing: 'ease-out'
+                                        }" target="_blank" v-for="(image, idx) in post.reply?.parent?.embed?.images"
+                                            :key="idx" :href="image.fullsize">
+                                            <img :src="image.thumb" :alt="image.alt">
+                                        </a>
+                                    </div>
+                                    <div v-else-if="(post?.post?.embed?.media?.images) !== undefined" class="embed">
+                                        <div v-if="post?.post?.embed?.media?.images" class="image-layout">
+                                            <a v-wave="{
+                                                duration: 0.3,
+                                                color: '#AE6A7D',
+                                                initialOpacity: 0.2,
+                                                easing: 'ease-out'
+                                            }" target="_blank" v-for="(image, idx) in post.post.embed.media.images"
+                                                :key="idx" :href="image.fullsize">
+                                                <img :src="image.thumb" :alt="image.alt">
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <a v-if="post?.post?.embed?.record?.author" target="_blank" v-wave="{
+                                        duration: 0.3,
+                                        color: '#AE6A7D',
+                                        initialOpacity: 0.2,
+                                        easing: 'ease-out'
+                                    }" :href="getFormattedLink(post.post.embed.record.uri, post.post.embed.record.author)"
+                                        class="quote">
+                                        <div class="post-header">
+                                            <div class="head-wrap">
+                                                <img :src="post.post.embed.record.author.avatar" alt="avatar">
+                                                <span class="name">{{ post.post.embed.record.author.displayName
+                                                    }}</span>
+                                            </div>
+                                            <div class="head-second">
+                                                <span class="handle">@{{ post.post.embed.record.author.handle }}</span>
+                                                <span class="time">{{
+                                                    timeSinceShort(post.post.embed.record.value.createdAt)
+                                                }}</span>
+                                            </div>
+                                        </div>
+                                        <p class="text">
+                                            {{ post.post.embed.record.value.text }}
+                                        </p>
+                                        <div v-if="post?.post?.embed?.record?.embeds && (post?.post?.embed?.record?.embeds).length > 0"
+                                            class="embed">
+                                            <div v-if="post.post.embed.record.embeds[0].media.images"
+                                                class="image-layout">
+                                                <img class="embedded"
+                                                    v-for="(image, index) in post.post.embed.record.embeds[0].media.images"
+                                                    :key="index" :src="image.thumb" :alt="image.alt">
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a v-else-if="post?.post?.embed?.record?.record" target="_blank" v-wave="{
+                                        duration: 0.3,
+                                        color: '#AE6A7D',
+                                        initialOpacity: 0.2,
+                                        easing: 'ease-out'
+                                    }" :href="getFormattedLink(post.post.embed.record.uri, post.post.embed.record.record.author.handle)"
+                                        class="quote">
+                                        <div class="post-header">
+                                            <div class="head-wrap">
+                                                <img :src="post.post.embed.record.record.author.avatar" alt="avatar">
+                                                <span class="name">{{ post.post.embed.record.record.author.displayName
+                                                    }}</span>
+                                            </div>
+                                            <div class="head-second">
+                                                <span class="handle">@{{ post.post.embed.record.record.author.handle
+                                                    }}</span>
+                                                <span class="time">
+                                                    {{ timeSinceShort(post.post.embed.record.record.value.createdAt) }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <p class="text">
+                                            {{ post.post.embed.record.record.value.text }}
+                                        </p>
+                                        <div v-if="(post?.post?.embed?.record?.record?.embeds[0]?.images).length > 0"
+                                            class="embed">
+                                            <div class="image-layout">
+                                                <img class="embedded"
+                                                    v-for="(image, index) in post?.post?.embed?.record?.record?.embeds[0]?.images"
+                                                    :key="index" :src="image.thumb" :alt="image.alt">
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="interactions reply-interactions">
+                                    <div v-for="(interaction, interIndex) in interactions" :key="interIndex">
+                                        <ion-icon :name="interaction.icon + '-outline'"></ion-icon>
+                                        <span>{{ getInteractionCount(interaction.type, index, true) }}</span>
+                                    </div>
+                                    <button
+                                        @click="copyLink(`https://bsky.app/profile/${post.reply.parent.author.handle}/post/${(post.reply.parent.uri).split('/')[4]}`)"
+                                        v-wave="{
+                                            duration: 0.2,
+                                            color: '#AE6A7D',
+                                            initialOpacity: 0.2,
+                                            easing: 'ease-out'
+                                        }">
+                                        <ion-icon name="link-outline"></ion-icon>
+                                    </button>
+                                    <a v-wave="{
+                                        duration: 0.2,
+                                        color: '#AE6A7D',
+                                        initialOpacity: 0.2,
+                                        easing: 'ease-out'
+                                    }" target="_blank"
+                                        :href="`https://bsky.app/profile/${post.post.author.handle}/post/${(post.post.uri).split('/')[4]}`"><ion-icon
+                                            name="open-outline"></ion-icon>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="post-wrapper">
                             <a v-wave="{
                                 duration: 0.3,
@@ -287,33 +493,35 @@ export default {
                                         </div>
                                     </a>
                                 </div>
+                                <div class="interactions">
+                                    <div v-for="(interaction, interIndex) in interactions" :key="interIndex">
+                                        <ion-icon :name="interaction.icon + '-outline'"></ion-icon>
+                                        <span>{{ getInteractionCount(interaction.type, index) }}</span>
+                                    </div>
+                                    <button
+                                        @click="copyLink(`https://bsky.app/profile/${post.post.author.handle}/post/${(post.post.uri).split('/')[4]}`)"
+                                        v-wave="{
+                                            duration: 0.2,
+                                            color: '#AE6A7D',
+                                            initialOpacity: 0.2,
+                                            easing: 'ease-out'
+                                        }">
+                                        <ion-icon name="link-outline"></ion-icon>
+                                    </button>
+                                    <a v-wave="{
+                                        duration: 0.2,
+                                        color: '#AE6A7D',
+                                        initialOpacity: 0.2,
+                                        easing: 'ease-out'
+                                    }" target="_blank"
+                                        :href="`https://bsky.app/profile/${post.post.author.handle}/post/${(post.post.uri).split('/')[4]}`"><ion-icon
+                                            name="open-outline"></ion-icon>
+                                    </a>
+                                </div>
                             </div>
+
                         </div>
-                        <div class="interactions">
-                            <div v-for="(interaction, interIndex) in interactions" :key="interIndex">
-                                <ion-icon :name="interaction.icon + '-outline'"></ion-icon>
-                                <span>{{ getInteractionCount(interaction.type, index) }}</span>
-                            </div>
-                            <button
-                                @click="copyLink(`https://bsky.app/profile/${post.post.author.handle}/post/${(post.post.uri).split('/')[4]}`)"
-                                v-wave="{
-                                    duration: 0.2,
-                                    color: '#AE6A7D',
-                                    initialOpacity: 0.2,
-                                    easing: 'ease-out'
-                                }">
-                                <ion-icon name="link-outline"></ion-icon>
-                            </button>
-                            <a v-wave="{
-                                duration: 0.2,
-                                color: '#AE6A7D',
-                                initialOpacity: 0.2,
-                                easing: 'ease-out'
-                            }" target="_blank"
-                                :href="`https://bsky.app/profile/${post.post.author.handle}/post/${(post.post.uri).split('/')[4]}`"><ion-icon
-                                    name="open-outline"></ion-icon>
-                            </a>
-                        </div>
+
                     </div>
                 </TransitionGroup>
                 <div class="footer">
