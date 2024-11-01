@@ -477,7 +477,7 @@ export default {
                                         </p>
                                         <div v-if="post?.post?.embed?.record?.embeds && (post?.post?.embed?.record?.embeds).length > 0"
                                             class="embed">
-                                            <div v-if="post.post.embed.record.embeds[0].media.images"
+                                            <div v-if="post.post?.embed?.record?.embeds[0]?.media?.images"
                                                 class="image-layout">
                                                 <img class="embedded"
                                                     v-for="(image, index) in post.post.embed.record.embeds[0].media.images"
