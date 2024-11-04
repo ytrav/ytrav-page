@@ -79,7 +79,8 @@
           .post-header,
           .reply-header {
             @include v.flex(row, flex-start, center);
-            gap: 10px;
+            // gap: 10px;
+            margin-left: -5px;
             .name {
               color: v.$secondary;
               font-size: 1.2rem;
@@ -97,6 +98,10 @@
               opacity: 0.7;
               font-size: 0.9rem;
               @include v.no-select();
+            }
+            .name, .handle, .time {
+              border-radius: 15px;
+              padding: 0 5px;
             }
           }
           .text {

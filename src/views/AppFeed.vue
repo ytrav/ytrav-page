@@ -10,6 +10,12 @@ import { RouterLink } from 'vue-router';
 export default {
     data() {
         return {
+            wave: {
+                duration: 0.2,
+                color: '#AE6A7D',
+                initialOpacity: 0.2,
+                easing: 'ease-out'
+            },
             messages: [],
             myProfile: {},
             myHandle: '',
@@ -197,7 +203,7 @@ export default {
                 if (isReply) {
                     this.posts[index].reply.parent.record.translated = false;
                 } else {
-                    this.posts.post[index].post.record.translated = false;
+                    this.posts[index].post.record.translated = false;
                 }
             }
             //     q: text,
@@ -237,11 +243,11 @@ export default {
                                 <div class="reply-header">
                                     <a target="_blank"
                                         :href="'https://bsky.app/profile/' + post.reply.parent.author.handle"
-                                        class="name">{{
+                                        class="name" v-wave="wave">{{
                                             post.reply.parent.author.displayName }}</a>
                                     <a target="_blank"
                                         :href="'https://bsky.app/profile/' + post.reply.parent.author.handle"
-                                        class="handle">@{{
+                                        class="handle" v-wave="wave">@{{
                                             post.reply.parent.author.handle }}</a>
                                     <span class="time">{{ timeSinceShort(post.reply.parent.record.createdAt) }}</span>
                                 </div>
@@ -306,7 +312,7 @@ export default {
                                                     }}</span>
                                             </div>
                                             <div class="head-second">
-                                                <span class="handle">@{{ post.post.embed.record.author.handle }}</span>
+                                                <span class="handle" >@{{ post.post.embed.record.author.handle }}</span>
                                                 <span class="time">{{
                                                     timeSinceShort(post.post.embed.record.value.createdAt)
                                                 }}</span>
@@ -400,10 +406,10 @@ export default {
                             <div class="post-body">
                                 <div class="post-header">
                                     <a target="_blank" :href="'https://bsky.app/profile/' + post.post.author.handle"
-                                        class="name">{{
+                                        class="name" v-wave="wave">{{
                                             post.post.author.displayName }}</a>
                                     <a target="_blank" :href="'https://bsky.app/profile/' + post.post.author.handle"
-                                        class="handle">@{{
+                                        class="handle" v-wave="wave">@{{
                                             post.post.author.handle }}</a>
                                     <span class="time">{{ timeSinceShort(post.post.record.createdAt) }}</span>
                                 </div>
@@ -434,7 +440,7 @@ export default {
                                             initialOpacity: 0.2,
                                             easing: 'ease-out'
                                         }" v-for="(image, idx) in post.post.embed.images" :key="idx"
-                                        :to="`/posts/post/${index}/media/image/${idx}`">
+                                            :to="`/posts/post/${index}/media/image/${idx}`">
                                             <img :src="image.thumb" :alt="image.alt">
                                         </RouterLink>
                                     </div>

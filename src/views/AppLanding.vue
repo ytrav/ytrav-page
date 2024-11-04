@@ -1,6 +1,7 @@
 <script>
 import LandingCover from '../components/landing/LandingCover.vue';
 import LandingBlock from '../components/landing/LandingBlock.vue';
+import SpotifyPlayer from '../components/SpotifyPlayer.vue';
 
 import about from '../assets/about.json';
 
@@ -10,7 +11,8 @@ import { mapStores } from 'pinia';
 export default {
     components: {
         LandingCover,
-        LandingBlock
+        LandingBlock,
+        SpotifyPlayer,
     },
     data() {
         return {
@@ -41,6 +43,9 @@ export default {
     <div class="landing" ref="page">
         <div class="wrapper">
             <LandingCover />
+            <Transition name="spotify">
+                <SpotifyPlayer />
+            </Transition>
             <div class="about">
                 <LandingBlock v-for="(block, index) in about" :key="index" :about="block" />
 

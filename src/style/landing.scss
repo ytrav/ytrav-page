@@ -5,6 +5,7 @@
   .cover {
     @include v.flex(column, center, flex-start);
     gap: 10px;
+    height: 400px;
     .greeting {
       @include v.flex(column, center, flex-start);
       h2,
@@ -29,7 +30,72 @@
         font-size: 1.2rem;
       }
     }
-    height: 400px;
+
+    .social-shortcut {
+      @include v.flex(row, flex-start, center);
+      // gap: 5px;
+      margin-left: -10px;
+      a {
+        @include v.flex(center, center, center);
+        svg {
+          fill: v.$secondary;
+          // max-width: 30px;
+          // max-height: 30px;
+          zoom: 0.65;
+          transition: transform 0.3s ease-out;
+          @include v.flex(center, center, center);
+        }
+        // border: 1px solid red;
+        width: 50px;
+        height: 40px;
+        // border-radius: 50%;
+        cursor: pointer;
+        // color: v.$secondary;
+        // transition: 0.3s;
+        &:hover {
+          svg {
+            transform: scale(1.1);
+            fill: v.$additional;
+          }
+        }
+        .tooltip {
+          z-index: 1;
+          @include v.flex(column, center, center);
+          line-height: 1.1;
+          span:last-child {
+            font-size: 0.9rem;
+            opacity: 0.8;
+          }
+          position: absolute;
+          margin-top: 90px;
+          background-color: #fedfeb;
+          padding: 5px 10px;
+          border-radius: 10px;
+          &::after {
+            @include v.css-triangle(#fedfeb, up, 10px, absolute, true);
+            left: 37.33%;
+            top: -8px;
+          }
+          filter: drop-shadow(#6f646b33 0px 7px 10px);
+        }
+      }
+    }
+    .see-all-socials {
+      @include v.flex(row, space-between, center);
+      text-decoration: none;
+      gap: 10px;
+      padding: 10px 20px;
+      border-radius: 25px;
+      margin-left: -20px;
+      ion-icon {
+        font-size: 1.5rem;
+        color: v.$secondary;
+      }
+      span {
+        color: v.$secondary;
+        font-size: 1.2rem;
+      }
+    }
   }
   .about {
     @include v.flex(row, space-between, flex-start);
@@ -56,4 +122,15 @@
       }
     }
   }
+}
+
+.tooltip-enter-active,
+.tooltip-leave-active {
+  transition: opacity 0.3s ease-out, transform 0.2s ease-out;
+}
+
+.tooltip-enter-from,
+.tooltip-leave-to {
+  opacity: 0;
+  transform: translateY(-5px);
 }

@@ -68,6 +68,64 @@
 //     }
 //   }
 // }
+@media screen and (max-width: 650px) {
+  .landing .about .block {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 510px) {
+  .spotify {
+    max-width: calc(100vw - 50px);
+    height: auto;
+    .player {
+      .player-header {
+        flex-direction: column;
+        align-items: flex-start;
+        span {
+          line-height: 1.2;
+        }
+        span:last-child {
+          margin-left: 10px;
+        }
+      }
+      max-width: calc(100vw - 50px);
+      // flex-direction: column-reverse;
+      height: auto;
+      padding-right: 10px;
+      align-items: flex-start;
+      gap: 0;
+      .track-info {
+        flex-shrink: 2;
+        // overflow-y: hidden;
+        .song-title {
+          @include v.truncate(250px);
+        }
+        .song-artist {
+          @include v.truncate(250px);
+        }
+        // .controls {
+        //   flex-wrap: wrap;
+        //   justify-content: flex-start;
+        //   .volume {
+        //     order: 4;
+        //   }
+        // }
+      }
+      img {
+        // width: 100%;
+        height: 100px;
+        flex-shrink: 1;
+        width: auto;
+        height: auto;
+        min-width: 70px;
+        object-fit: cover;
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 445px) {
   .posts .wrapper .posts-list .post {
     .post-wrapper .post-body .embed .quote {
@@ -94,6 +152,34 @@
   }
 }
 
+@media screen and (max-width: 422px) {
+  .spotify .player {
+    position: relative;
+    img {
+      width: 70px;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      // right: 30px;
+    }
+    .track-info {
+      .song-title {
+        @include v.truncate(200px);
+      }
+      .song-artist {
+        @include v.truncate(200px);
+      }
+      .controls {
+        width: calc(100vw - 70px);
+        justify-content: space-between;
+        .volume {
+          margin-right: 95px;
+        }
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 370px) {
   .posts .wrapper .posts-list .post-wrapper .post-body .embed .quote {
     .post-header {
@@ -107,7 +193,6 @@
         }
       }
       .head-second {
-
         .handle {
           @include v.truncate(200px);
         }
