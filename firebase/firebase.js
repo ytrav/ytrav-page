@@ -18,10 +18,10 @@ const firebaseConfig = {
   measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 
-console.log('Environment Variables After dotenv.config():');
-console.log('FIREBASE_API_KEY:', process.env.FIREBASE_API_KEY);
-console.log('FIREBASE_DATABASE_URL:', process.env.FIREBASE_DATABASE_URL);
-console.log('Firebase Config:', firebaseConfig); // Check values before initializing Firebase
+// console.log('Environment Variables After dotenv.config():');
+// console.log('FIREBASE_API_KEY:', process.env.FIREBASE_API_KEY);
+// console.log('FIREBASE_DATABASE_URL:', process.env.FIREBASE_DATABASE_URL);
+// console.log('Firebase Config:', firebaseConfig); // Check values before initializing Firebase
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
 // const analytics = getAnalytics(app);

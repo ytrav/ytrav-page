@@ -27,9 +27,9 @@ export default async function handler(req, res) {
 
     // Check if cached token exists and is still valid
     if (tokenCache && tokenExpiry && Date.now() < tokenExpiry) {
-      console.log('Using cached token...')
+      // console.log('Using cached token...')
     } else {
-      console.log('Fetching new Bsky token...')
+      // console.log('Fetching new Bsky token...')
       tokenCache = await fetchBskyToken(handle, password)
     }
 
