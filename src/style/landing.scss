@@ -7,19 +7,46 @@
     gap: 10px;
     height: 400px;
     .greeting {
+      width: 280px;
+      height: 140px;
+      position: relative;
       @include v.flex(column, center, flex-start);
       h2,
       h1 {
         color: v.$secondary;
+        width: 100%;
         font-weight: 400;
         line-height: 1.2;
+        position: relative;
+        span {
+          color: inherit;
+          position: absolute;
+          &.fix {
+            font-weight: 600;
+          }
+        }
+        &.fix {
+          font-weight: 600;
+        }
+        span:last-child {
+          font-weight: 600;
+          white-space: nowrap;
+          right: 0;
+        }
       }
       h1 {
         font-size: 2.5rem;
         font-weight: 500;
       }
+      .introduction-container {
+        position: relative;
+        height: 32px;
+        width: 100%;
+        // border: 1px solid red;
+      }
       h2 {
         font-size: 1.7rem;
+          position: absolute;
       }
     }
     .caption {
@@ -133,4 +160,15 @@
 .tooltip-leave-to {
   opacity: 0;
   transform: translateY(-5px);
+}
+
+
+.name-fade-enter-active,
+.name-fade-leave-active {
+  transition: opacity 0.3s ease-out;
+}
+
+.name-fade-enter-from,
+.name-fade-leave-to {
+  opacity: 0;
 }

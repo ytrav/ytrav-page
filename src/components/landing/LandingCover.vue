@@ -10,7 +10,16 @@ import TelegramIcon from '@/assets/socials/telegram.svg?component';
 
 export default {
     computed: {
-        ...mapStores(useDataStore)
+        ...mapStores(useDataStore),
+        cycleName() {
+            return this.names[this.nameIndex];
+        },
+        cycleIntroduction() {
+            return this.introductions[this.nameIndex];
+        },
+        nameClass() {
+            return this.nameIndex === 1
+        }
     },
     data() {
         return {
@@ -34,6 +43,13 @@ export default {
                     link: 'https://t.me/ytrav_v'
                 }
             ],
+            names: ['Maeve', 'Мейв', 'Mejw'],
+            introductions: [
+                "Hello, I'm",
+                "Привіт, я",
+                "Siema, jestem"
+            ],
+            nameIndex: 0,
             iconComponents: Object.freeze({
                 twitter: TwitterIcon,
                 bluesky: BlueskyIcon,
@@ -44,7 +60,18 @@ export default {
             currentHovered: null
         };
     },
+    mounted() {
+        this.nameCycle();
+    },
+    beforeUnmount() {
+        clearInterval(this.nameInterval);
+    },
     methods: {
+        nameCycle() {
+            this.nameInterval = setInterval(() => {
+                this.nameIndex = (this.nameIndex + 1) % this.names.length;
+            }, 2500);
+        },
         handleHover(index) {
             // If hovering over a different link or starting fresh
             if (this.currentHovered !== index) {
@@ -85,12 +112,20 @@ export default {
 <template>
     <div class="cover">
         <div class="greeting">
-            <h2>Hey there,</h2>
-            <h1>Glad you stopped by!</h1>
+            <div class="introduction-container">
+                <Transition name="name-fade">
+                    <h2 :key="cycleName" :class="{ fix: nameClass }"> {{ cycleIntroduction }} </h2>
+                </Transition>
+            </div>
+            <h1>
+                <Transition name="name-fade"><span :key="cycleName" :class="{ fix: nameClass }"> {{ cycleName }} </span>
+                </Transition>
+                <span>・メイヴ</span>
+            </h1>
         </div>
         <div class="caption">
-            <span>I'm Maeve and this is my little website :3</span>
-            <span>Read about me and where to find me here^^</span>
+            <span>and this is my little website :3</span>
+            <span>read about me and where to find me here^^</span>
         </div>
         <div class="social-block">
             <div class="social-shortcut">

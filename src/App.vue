@@ -24,7 +24,9 @@ export default {
   <AppHeader />
   <RouterView v-slot="{ Component }" class="page">
     <Transition name="page">
-      <Component :is="Component" />
+      <KeepAlive>
+        <Component :is="Component" />
+      </KeepAlive>
     </Transition>
   </RouterView>
   <Transition name="navbar">

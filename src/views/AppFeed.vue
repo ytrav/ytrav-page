@@ -20,6 +20,7 @@ export default {
             myProfile: {},
             myHandle: '',
             posts: null,
+            scrollPosition: 0,
             interactions: [
                 {
                     type: 'replyCount',
@@ -45,8 +46,19 @@ export default {
     mounted() {
         this.fetchPosts();
     },
+    activated() {
+        this.$el.scrollTop = this.scrollPosition;
+    },
+    beforeRouteLeave(to, from, next) {
+        this.scrollPosition = this.$el.scrollTop;        
+        next();
+    },
     methods: {
         async fetchPosts() {
+            if (this.feedStore.posts.length > 0) {
+                this.posts = this.feedStore.posts;
+                return;
+            }
             try {
                 const response = await axios.get('https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=ytrav.me');
                 if (response.data.feed) {
@@ -312,16 +324,16 @@ export default {
                                                     }}</span>
                                             </div>
                                             <div class="head-second">
-                                                <span class="handle" >@{{ post.post.embed.record.author.handle }}</span>
+                                                <span class="handle">@{{ post.post.embed.record.author.handle }}</span>
                                                 <span class="time">{{
                                                     timeSinceShort(post.post.embed.record.value.createdAt)
-                                                }}</span>
+                                                    }}</span>
                                             </div>
                                         </div>
                                         <p class="text">
                                             {{ post.post.embed.record.value.text }}
                                         </p>
-                                        <div v-if="post?.post?.embed?.record?.embeds && (post?.post?.embed?.record?.embeds).length > 0"
+                                        <div v-if="post?.post?.embed?.record?.embeds && (post?.post?.embed?.record?.embeds)?.length > 0"
                                             class="embed">
                                             <div v-if="post.post.embed.record.embeds[0].media.images"
                                                 class="image-layout">
@@ -356,7 +368,7 @@ export default {
                                         <p class="text">
                                             {{ post.post.embed.record.record.value.text }}
                                         </p>
-                                        <div v-if="(post?.post?.embed?.record?.record?.embeds[0]?.images).length > 0"
+                                        <div v-if="(post?.post?.embed?.record?.record?.embeds[0]?.images)?.length > 0"
                                             class="embed">
                                             <div class="image-layout">
                                                 <img class="embedded"
@@ -475,13 +487,13 @@ export default {
                                                 <span class="handle">@{{ post.post.embed.record.author.handle }}</span>
                                                 <span class="time">{{
                                                     timeSinceShort(post.post.embed.record.value.createdAt)
-                                                    }}</span>
+                                                }}</span>
                                             </div>
                                         </div>
                                         <p class="text">
                                             {{ post.post.embed.record.value.text }}
                                         </p>
-                                        <div v-if="post?.post?.embed?.record?.embeds && (post?.post?.embed?.record?.embeds).length > 0"
+                                        <div v-if="post?.post?.embed?.record?.embeds && (post?.post?.embed?.record?.embeds)?.length > 0"
                                             class="embed">
                                             <div v-if="post.post?.embed?.record?.embeds[0]?.media?.images"
                                                 class="image-layout">
@@ -516,7 +528,7 @@ export default {
                                         <p class="text">
                                             {{ post.post.embed.record.record.value.text }}
                                         </p>
-                                        <div v-if="(post?.post?.embed?.record?.record?.embeds[0]?.images).length > 0"
+                                        <div v-if="(post?.post?.embed?.record?.record?.embeds[0]?.images)?.length > 0"
                                             class="embed">
                                             <div class="image-layout">
                                                 <img class="embedded"
