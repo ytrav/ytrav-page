@@ -30,7 +30,14 @@ export default {
                 }
             }
         }
-    }
+    },
+    activated() {
+        // Update data properties when the component is reactivated
+        this.postType = this.$route.params.type;
+        this.id = this.$route.params.id;
+        this.mediaType = this.$route.params.mediaType;
+        this.mediaId = this.$route.params.mediaId;
+    },
 }
 
 </script>
