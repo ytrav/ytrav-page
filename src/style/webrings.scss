@@ -20,6 +20,9 @@
     margin-bottom: 15px;
   }
   .webring-nav {
+    &:not(:first-of-type) {
+      margin-top: 20px;
+    }
     @include v.flex(row, space-between, center);
     width: 100%;
     max-width: 600px;
@@ -28,6 +31,7 @@
     border: 2px solid v.$secondary;
     border-radius: 15px;
     overflow: hidden;
+
     a {
       //   padding: 10px 20px;
       flex-grow: 1;
@@ -44,6 +48,8 @@
       text-decoration: none;
       &.previous {
         border-right: 2px solid v.$secondary;
+        max-width: 75px;
+        width: 100%;
         &:hover {
           .arrow {
             transform: translateX(-5px);
@@ -73,6 +79,8 @@
       }
       &.next {
         border-left: 2px solid v.$secondary;
+        max-width: 75px;
+        width: 100%;
         &:hover {
           .arrow {
             transform: translateX(5px);
@@ -86,7 +94,6 @@
       &:active {
         // transform: translateY(1px);
         opacity: 0.9;
-        
       }
     }
   }
