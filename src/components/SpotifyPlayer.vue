@@ -6,7 +6,7 @@
                     <span>Maeve is currently</span>
                     <span>listening to</span>
                 </div>
-                <span class="song-title">{{ currentTrack.title }}</span>
+                <span :title="currentTrack.title" class="song-title">{{ currentTrack.title }}</span>
                 <span class="song-artist">{{ currentTrack.artist }}</span>
                 <div class="controls">
                     <button v-wave="wave" @click="reset">
@@ -21,12 +21,12 @@
                         </button>
                         <input type="range" name="volume" min="0" max="1" step="0.05" id="volume" v-model="volume">
                     </div>
-                    <a target="_blank" v-wave="wave" :href="currentTrack.spotifyLink">
+                    <a :title="`Listen to ${currentTrack.title} on Spotify`" target="_blank" v-wave="wave" :href="currentTrack.spotifyLink">
                         <SpotifyIcon />
                     </a>
 
                 </div>
-                <audio v-if="currentTrack.previewUrl" :src="currentTrack.previewUrl" ref="spotify"></audio>
+                <audio :src="currentTrack.previewUrl" ref="spotify"></audio>
             </div>
             <img :src="currentTrack.albumArt" alt="Album Art" />
         </div>
@@ -35,6 +35,7 @@
 
 <script>
 import axios from 'axios';
+import { useVarStore } from '../stores/varStore';
 
 import SpotifyIcon from './SpotifyIcon.vue';
 
@@ -59,19 +60,9 @@ export default {
         };
     },
     methods: {
-        togglePlay() {
-            if (this.$refs.spotify.paused) {
-                this.$refs.spotify.play();
-                this.isPaused = false;
-            } else {
-                this.$refs.spotify.pause();
-                this.isPaused = true;
-            }
+        throwSpotifyWarning() {
+            useVarStore().callToast("Spotify song previews are not available anymore, we're working on a solution. Sorry!", 'warning-outline');
         },
-        reset() {
-            this.$refs.spotify.currentTime = 0;
-        },
-
         mute() {
             if (this.isMuted) {
                 this.volume = this.volumeBackup;
@@ -82,7 +73,28 @@ export default {
                 this.isMuted = true;
             }
         },
+        togglePlay() {
+            console.log(this.$refs.spotify);
+            
+            if (!this.$refs.spotify) return;
+            if (this.$refs.spotify.paused) {
+                this.$refs.spotify.play();
+                this.isPaused = false;
+                this.throwSpotifyWarning();
+            } else {
+                this.$refs.spotify.pause();
+                this.isPaused = true;
+            }
+        },
+
+        reset() {
+            if (!this.$refs.spotify) return;
+            this.$refs.spotify.currentTime = 0;
+            this.throwSpotifyWarning();
+        },
+
         updateVolume() {
+            if (!this.$refs.spotify) return;
             this.$refs.spotify.volume = this.volume;
         },
         async fetchCurrentTrack() {
@@ -129,11 +141,13 @@ export default {
         }
     },
     mounted() {
-        // Fetch track data when the component is mounted
         this.fetchCurrentTrack();
-        this.spotify = this.$refs.spotify;
-        // Optionally: Set interval to refresh every 30 seconds or so
+
+        this.$nextTick(() => {
+            this.spotify = this.$refs.spotify;
+        });
+
         setInterval(this.fetchCurrentTrack, 30000);
-    },
+    }
 };
 </script>

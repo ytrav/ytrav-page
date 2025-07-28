@@ -34,6 +34,7 @@ const getAccessToken = async () => {
 
 export default async function handler(req, res) {
   try {
+    const market = 'from_token'
     const accessToken = await getAccessToken()
 
     // Use the access token to fetch currently playing track
@@ -42,6 +43,9 @@ export default async function handler(req, res) {
       {
         headers: {
           Authorization: `Bearer ${accessToken}`
+        },
+        params: {
+          market
         }
       }
     )

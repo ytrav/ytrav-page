@@ -12,6 +12,7 @@ import './style/messages.scss';
 import './style/posts.scss';
 import './style/media.scss';
 import './style/socials.scss';
+import './style/webrings.scss';
 import './style/viewports.scss';
 
 

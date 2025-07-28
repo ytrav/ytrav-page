@@ -1,0 +1,93 @@
+@use 'variables.scss' as v;
+
+.webrings {
+  margin-top: 50px;
+  @include v.flex(column, center, flex-start);
+  background-color: #fedfeb;
+  padding: 15px 25px 25px 25px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+  min-width: 290px;
+  border-radius: 35px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  h2 {
+    color: v.$secondary;
+    font-weight: 600;
+    font-size: 1.8rem;
+  }
+  p:not(:last-child) {
+    margin-bottom: 15px;
+  }
+  .webring-nav {
+    @include v.flex(row, space-between, center);
+    width: 100%;
+    max-width: 600px;
+    align-self: center;
+    height: 50px;
+    border: 2px solid v.$secondary;
+    border-radius: 15px;
+    overflow: hidden;
+    a {
+      //   padding: 10px 20px;
+      flex-grow: 1;
+      height: 100%;
+      .arrow {
+        color: inherit;
+        transition: transform 0.2s v.$bezier-alt;
+      }
+      //   color: #fff;
+      //   text-align: center;
+      //   border: 2px solid v.$secondary;
+      @include v.flex(row, center, center);
+      //   background-color: v.$additional;
+      text-decoration: none;
+      &.previous {
+        border-right: 2px solid v.$secondary;
+        &:hover {
+          .arrow {
+            transform: translateX(-5px);
+          }
+        }
+      }
+      &.ring {
+        .text {
+          @include v.flex(column, center, center);
+          transform: translateY(10px);
+          transition: transform 0.2s v.$bezier, color 0.2s v.$bezier;
+          span {
+            opacity: 0;
+            transition: opacity 0.3s ease-out;
+            color: #ffffffaa;
+          }
+        }
+        &:hover {
+          .text {
+            transform: translateY(0);
+            color: #fff;
+            span {
+              opacity: 1;
+            }
+          }
+        }
+      }
+      &.next {
+        border-left: 2px solid v.$secondary;
+        &:hover {
+          .arrow {
+            transform: translateX(5px);
+          }
+        }
+      }
+      &:hover {
+        background-color: v.$secondary;
+        color: #fff;
+      }
+      &:active {
+        transform: translateY(1px);
+        opacity: 0.9;
+        
+      }
+    }
+  }
+}
